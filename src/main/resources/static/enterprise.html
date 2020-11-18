@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!--bootstrap的css-->
+    <link rel="stylesheet" href="plug/bootstrap-3.2.0-dist/css/bootstrap.min.css">
+    <!--字体css-->
+    <link rel="stylesheet" href="plug/Font-Awesome-4.7.0/css/font-awesome.min.css">
+    <!--自己的css-->
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<div class="row row1" style="background: black">
+    <div class="container">
+        <div class="news-login login-user">
+            1
+        </div>
+    </div>
+</div>
+
+<div class="container" id="content">
+
+    <!--需要填充的地方-->
+</div>
+
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="js/jquery-1.11.1.js"></script>
+<script src="js/jquery-1.8.3.min.js"></script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="plug/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+
+<script>
+    const mid = location.search.split('=')[1];
+    $.ajax({
+        type:"get",
+        data_type:"json",
+        url:"/enterprise/"+mid,
+        success:function (result){
+            $('title').html(result.enterpriseName);
+            var ps = "<h3 class=\"about_title\">"+result.enterpriseName+"</h3>";
+            for (const string of result.enterpriseDescription.split(/\s+/)) {
+                ps+="<p style=\"text-indent: 2em\">";
+                ps+=string;
+                ps+="</p>";
+            };
+            $('#content').html(ps);
+        }
+    })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ezs.fta.mapper.EnterpriseMapper">
+    <!--查询所有企业-->
+    <select id="queryAllEnterprise" resultMap="dataToEnterprisePojo">
+        select eid, enterprise_name
+        from enterprise_chart
+    </select>
+
+    <!--添加新的企业-->
+    <insert id="insertEnterprise" parameterType="Enterprise">
+        insert into enterprise_chart(eid, enterprise_name, enterprise_description)
+        VALUES (#{eid}, #{enterpriseName}, #{enterpriseDescription})
+    </insert>
+
+    <!--删除企业-->
+    <delete id="deleteEnterpriseByEid">
+        delete
+        from enterprise_chart
+        where eid = #{eid};
+    </delete>
+
+    <!--查询公司的描述信息-->
+    <select id="queryEnterpriseByEid" resultMap="dataToEnterprisePojo" parameterType="int">
+        select *
+        from enterprise_chart
+        where eid = #{eid}
+    </select>
+
+    <!--通过关键词检索公司-->
+    <select id="queryEnterpriseByKeyWord" parameterType="String" resultMap="dataToEnterprisePojo">
+        select eid, enterprise_name
+        from enterprise_chart
+        where enterprise_name like concat('%', #{keyWord}, '%')
+    </select>
+
+    <!--保存修改后的企业数据-->
+    <update id="updateEnterprise" parameterType="Enterprise">
+        update enterprise_chart
+        set enterprise_name=#{enterpriseName},
+            enterprise_description=#{enterpriseDescription}
+        where eid = #{eid}
+    </update>
+
+
+    <!--映射关系-->
+    <resultMap id="dataToEnterprisePojo" type="Enterprise">
+        <id property="mid" column="mid"/>
+        <result property="enterpriseName" column="enterprise_name"/>
+        <result property="enterpriseDescription" column="enterprise_description"/>
+    </resultMap>
+
+
+</mapper>

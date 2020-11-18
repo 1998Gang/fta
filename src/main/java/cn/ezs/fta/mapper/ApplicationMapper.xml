@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ezs.fta.mapper.ApplicationMapper">
+    <!--添加新申请申请-->
+    <insert id="insertNewApplication" parameterType="Application">
+        insert into application(application_reason, application_date, applicant, application_item, application_status,application_pass)
+        VALUES (#{applicationReason}, #{applicationDate}, #{applicant}, #{applicationItem}, #{applicationStatus},#{applicationPass});
+    </insert>
+
+    <!--根据username查询申请-->
+    <select id="queryApplicationByUserName" resultMap="databaseToApplicationPojo" parameterType="String">
+        select *
+        from application
+        where applicant = #{username}
+    </select>
+
+    <!--查询所有申请-->
+    <select id="queryAllApplication" resultMap="databaseToApplicationPojo">
+        select *
+        from application
+    </select>
+
+    <!--查询所有通过了的申请-->
+    <select id="queryPassApplication" resultMap="databaseToApplicationPojo">
+        select *
+        from application
+        where application_pass = 'p';
+    </select>
+
+    <!--查询所有未通过的申请-->
+    <select id="queryNoPassApplication" resultMap="databaseToApplicationPojo">
+        select *
+        from application
+        where application_pass = 'n';
+    </select>
+
+    <!--更改审核状态 通过还是不通过，-->
+    <update id="changeApplicationStatus">
+        update application
+        set application_status='a',
+            application_pass=#{passChar}
+        where aid = #{aid};
+    </update>
+
+
+    <resultMap id="databaseToApplicationPojo" type="Application">
+        <id property="aid" column="aid"/>
+        <result property="applicationReason" column="application_reason"/>
+        <result property="applicationDate" column="application_date"/>
+        <result property="applicationItem" column="application_item"/>
+        <result property="applicationStatus" column="application_status"/>
+        <result property="applicationPass" column="application_pass"/>
+        <result property="applicant" column="applicant"/>
+    </resultMap>
+
+</mapper>

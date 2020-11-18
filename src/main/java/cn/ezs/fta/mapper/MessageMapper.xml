@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ezs.fta.mapper.MessageMapper">
+    <!--查询所有信息，但是不查询信息内容-->
+    <select id="getAllMessage" resultType="Message">
+        select mid, title, date
+        from public_message
+    </select>
+
+    <!--根据信息id查询信息内容-->
+    <select id="getMessageByMid" resultType="Message" parameterType="int">
+        select mid, title, content, date
+        from public_message
+        where mid = #{mid}
+    </select>
+
+    <!--添加新的信息-->
+    <insert id="addNewMessage" parameterType="Message">
+        insert into public_message(title, content, date)
+        values (#{title}, #{content}, #{date})
+    </insert>
+
+    <!--删除一条信息-->
+    <delete id="deleteMessage" parameterType="int">
+        delete
+        from public_message
+        where mid = #{mid}
+    </delete>
+
+    <!--queryMwssageByKeyWord-->
+    <select id="queryMwssageByKeyWord" parameterType="String" resultType="Message">
+        select mid, title, date
+        from public_message
+        where title like concat('%', #{keyWord}, '%')
+    </select>
+
+
+    <!--更新公告-->
+    <update id="updateMessage" parameterType="Message">
+        update public_message
+        set title=#{title},
+            content=#{content}
+        where mid = #{mid}
+    </update>
+</mapper>
